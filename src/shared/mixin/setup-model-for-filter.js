@@ -14,7 +14,7 @@ export default {
             for(var i=0;i<filterFunctionList.length;++i) {
                 var key = filterFunctionList[i]
                 if (typeof self.FilterModels[key] == "undefined")
-                    self.$set(self.FilterModels, key, "")
+                    self.$set(self.FilterModels, key, null)
             }
         }
     }

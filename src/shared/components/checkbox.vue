@@ -1,16 +1,18 @@
 <template>
     <div class="form-group">
         <lt-label :label="label" :tooltip-link="tooltipLink"></lt-label>
-        <select
-            ref="input"
-            :value="value"
-            :class="classValue"
-            @change="updateValue($event.target.value)"
-            >
-            <option v-for="option in options" v-bind:value="option.value">
+        <div v-for="option in options" >
+            <input type="checkbox"
+                ref="input"
+                :value="option.value"
+                :class="classValue"
+                v-model="Checkboxes"
+                @click="updateValue($event.target.value)"
+                />
+            <label :for="option.value">
                 {{ option.text }}
-            </option>
-        </select>
+            </label>
+        </div>
     </div>
 </template>
 <script>
@@ -18,9 +20,14 @@
     import trackData from '../mixin/track-data'
 
     export default {
+        data () {
+            return {
+                Checkboxes: this.value
+            }
+        },
         props: {
             value: {
-                default: null
+                default: []
             },
             label: {
                 type: String,
@@ -37,19 +44,15 @@
             }
         },
         mounted () {
-            this.formatValue(),
+            this.updateValue(),
             this.setTracking()
         },
         updated () {
             this.setTracking()
         },
-
         methods: {
-            updateValue (value) {
-                this.$emit('input', value)
-            },
-            formatValue () {
-                this.$refs.input.value = this.value;
+            updateValue () {
+                this.$emit('input', this.Checkboxes)
             },
             setTracking () {
                 trackData.set({key: this.label, val: this.value});

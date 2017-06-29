@@ -40,19 +40,19 @@ export default {
         },
         compareResult(result, functionName) {
             self = this
-            if (result && typeof result.filterValue != "undefined" && self.FilterModels && self.FilterModels[functionName] != "undefined") {
+            if (result && typeof result.filterValue != "undefined" && self.FilterModels && self.FilterModels[functionName] != null) {
                 if (typeof self.FilterModels[functionName] != "object")
                     return result.filterValue == self.FilterModels[functionName]
-                else if (typeof self.FilterModels[functionName] == "object") {
+                else if (typeof self.FilterModels[functionName] == "object" && self.FilterModels[functionName].length > 0) {
                     for (var key in self.FilterModels[functionName]) {
-                        // untested code
-                        return result.filterValue == self.FilterModels[functionName][key]
+                        if (result.filterValue == self.FilterModels[functionName][key]) {
+                            return result.filterValue == self.FilterModels[functionName][key]
+                        }
                     }
-                    return result.filterValue == self.FilterModels[functionName]
+                    return false
                 }
             }
-            else
-                return true
+            return true
         }
     }
 }

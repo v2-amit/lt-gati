@@ -1,11 +1,11 @@
 <template>
     <div>
-        <drop-down 
+        <checkbox
             v-model="FilterModels.getReferralList" 
             :options="Filters.getReferralList"
             :value="FilterModels.getReferralList"
             >
-        </drop-down>
+        </checkbox>
         <div v-for="(listKey, k) in CustomOrder">
             <hr/>
             <div v-if="getGroupBy && getGroupBy[listKey] && getGroupBy[listKey].length">
@@ -22,6 +22,7 @@
     import OfferTypeMixin from '../mixin/offer-type'
     import ReferralsMixin from '../mixin/referrals'
     import DropDown from '../components/drop-down.vue'
+    import Checkbox from '../components/checkbox.vue'
     import OfferRow from '../components/offer-row.vue'
     
     export default {
@@ -40,6 +41,7 @@
                     "getReferralList"
                 ],
                 FilterModels: {
+                    getReferralList: []
                 },
                 Filters: {
                 },
@@ -48,6 +50,7 @@
         },
         components: {
             DropDown,
+            Checkbox,
             OfferRow
         },
         mixins: [BaseMixin, OfferTypeMixin, ReferralsMixin]
