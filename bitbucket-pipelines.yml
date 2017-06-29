@@ -1,0 +1,60 @@
+# This is a sample build configuration for Javascript.
+# Check our guides at https://confluence.atlassian.com/x/VYk8Lw for more examples.
+# Only use spaces to indent your .yml configuration.
+# -----
+# You can specify a custom docker image from Docker Hub as your build environment.
+image: node:4.6.0
+
+pipelines:
+    branches:
+        env/dev:
+            - step:
+                script: # Modify the commands below to build your repository.
+                  - npm install
+                  - npm test
+                  - export AWS_ACCESS_KEY_ID=$NP_LT_YANTR_AWS_ACCESS_KEY_ID
+                  - export AWS_SECRET_ACCESS_KEY=$NP_LT_YANTR_AWS_SECRET_KEY
+                  - apt-get update && apt-get install -y python-dev make gcc unzip curl
+                  - curl "https://s3.amazonaws.com/aws-cli/awscli-bundle.zip" -o "awscli-bundle.zip"
+                  - unzip awscli-bundle.zip
+                  - ./awscli-bundle/install -b ~/bin/aws
+                  - npm run dev
+                  - /root/bin/aws configure set preview.cloudfront true
+                  - cd dist
+                  - /root/bin/aws s3 cp . s3://dev-en-web-assets/lt-yantr/dist/ --recursive --acl public-read
+                  - /root/bin/aws s3 cp . s3://dev-en-web-assets/lt-yantr/dist/ --recursive --include "*.svg" --exclude "*" --content-type "image/svg+xml"
+                  - /root/bin/aws cloudfront create-invalidation --distribution-id E2VM5C8VDA6BMO --paths "/*"
+        env/stage:
+            - step:
+                script: # Modify the commands below to build your repository.
+                  - npm install
+                  - npm test
+                  - export AWS_ACCESS_KEY_ID=$NP_LT_YANTR_AWS_ACCESS_KEY_ID
+                  - export AWS_SECRET_ACCESS_KEY=$NP_LT_YANTR_AWS_SECRET_KEY
+                  - apt-get update && apt-get install -y python-dev make gcc unzip curl
+                  - curl "https://s3.amazonaws.com/aws-cli/awscli-bundle.zip" -o "awscli-bundle.zip"
+                  - unzip awscli-bundle.zip
+                  - ./awscli-bundle/install -b ~/bin/aws
+                  - npm run stage
+                  - /root/bin/aws configure set preview.cloudfront true
+                  - cd dist
+                  - /root/bin/aws s3 cp . s3://np-en-web-assets/lt-yantr/dist/ --recursive --acl public-read
+                  - /root/bin/aws s3 cp . s3://np-en-web-assets/lt-yantr/dist/ --recursive --include "*.svg" --exclude "*" --content-type "image/svg+xml"
+                  - /root/bin/aws cloudfront create-invalidation --distribution-id E3MUWC0Z6FNKKY --paths "/*"
+        env/prod:
+            - step:
+                script: # Modify the commands below to build your repository.
+                  - npm install
+                  - npm test
+                  - export AWS_ACCESS_KEY_ID=$P_LT_YANTR_AWS_ACCESS_KEY_ID
+                  - export AWS_SECRET_ACCESS_KEY=$P_LT_YANTR_AWS_SECRET_KEY
+                  - apt-get update && apt-get install -y python-dev make gcc unzip curl
+                  - curl "https://s3.amazonaws.com/aws-cli/awscli-bundle.zip" -o "awscli-bundle.zip"
+                  - unzip awscli-bundle.zip
+                  - ./awscli-bundle/install -b ~/bin/aws
+                  - npm run prod
+                  - /root/bin/aws configure set preview.cloudfront true
+                  - cd dist
+                  - /root/bin/aws s3 cp . s3://en-web-assets/lt-yantr/dist/ --recursive --acl public-read
+                  - /root/bin/aws s3 cp . s3://en-web-assets/lt-yantr/dist/ --recursive --include "*.svg" --exclude "*" --content-type "image/svg+xml"
+                  - /root/bin/aws cloudfront create-invalidation --distribution-id ETZ5GQEGU71G1 --paths "/*"

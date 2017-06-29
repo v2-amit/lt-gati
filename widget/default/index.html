@@ -1,0 +1,129 @@
+<html>
+    <head>
+        <!-- Generic Include Begin : If below code is already in that page then don't include below code-->
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <link href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
+        <!-- Generic Include End -->
+    </head>
+    <body data-item-parent="PARTNER_INTEGRATION_NO_PARENT" data-item-id="-1">
+        <!-- Widget DIV Begin -->
+        <div class="loadWidget"></div>
+        <!-- Widget DIV End -->
+        <script>
+        (function() {
+            /**
+             * Simple query string parser.
+             *
+             * @param {String} query The query string that needs to be parsed.
+             * @returns {Object}
+             * @api public
+             */
+            function queryStringConverter(query) {
+              var parser = /([^=?&]+)=?([^&]*)/g
+                , result = {}
+                , part;
+
+                var decode = function(input) {
+                  return decodeURIComponent(input.replace(/\+/g, ' '));
+                }
+
+              //
+              // Little nifty parsing hack, leverage the fact that RegExp.exec increments
+              // the lastIndex property so we can continue executing this loop until we've
+              // parsed all results.
+              //
+              for (;
+                part = parser.exec(query);
+                result[decode(part[1])] = decode(part[2])
+              );
+
+              return result;
+            }
+            var createDiv = function () {
+                var widgetDiv = document.getElementsByClassName("loadWidget")[0];
+                var qsObj = queryStringConverter(location.search.substring(1));
+                for (var k in qsObj){
+                    if (typeof qsObj[k] !== 'function') {
+                        var attrKey = "";
+                        if (k.toLowerCase() != "id")
+                            attrKey = "init-" + k.toLowerCase();
+                        else
+                            attrKey = k.toLowerCase();
+                        widgetDiv.setAttribute(attrKey, qsObj[k]);
+                    }
+                }
+            }
+            var getQueryStringParam = function (name) {
+                var qsObj = queryStringConverter(location.search.substring(1));
+                for (var k in qsObj){
+                    if (typeof qsObj[k] !== 'function') {
+                        if (k.toLowerCase() == name)
+                            return qsObj[k];
+                    }
+                }
+            }
+            var loadjsfile = function (filename, callback) {
+		var fileref = document.createElement('script');
+		fileref.src = filename;
+                if (typeof callback != "undefined")
+                    fileref.onload = callback;
+		document.getElementsByTagName("head")[0].appendChild(fileref);
+            }
+
+            var loadfontfile = function (fontName) {
+		var head = document.getElementsByTagName('head')[0];
+                var link = document.createElement('link');
+                link.rel = 'stylesheet';
+                link.type = 'text/css';
+                link.href = '//fonts.googleapis.com/css?family='+fontName;
+                link.media = 'all';
+                head.appendChild(link);
+            }
+            createDiv();
+            var scriptName = getQueryStringParam("scriptname");
+            if (scriptName != "") {
+                loadjsfile("../../js/" + scriptName + ".build.js");
+            }
+            var fontName = getQueryStringParam("fontname");
+            if (typeof fontName == "undefined") {
+                var fontName = "Open+Sans:700,600,400,300|Open+Sans+Condensed:700,300";
+            }
+            if (fontName) {
+                loadfontfile(fontName);
+            }
+            window.segment_write_key_from_qs = getQueryStringParam("segment_write_key");
+            window.segment_write_key = "usUgJ2YXjodobe0S5v4LKy8aEyYUcgcd";
+            var isNonProd = true;
+            if(window.location.host == "daeenpsivztwq.cloudfront.net") {
+                window.segment_write_key = "WoyTRXZmME8AYoK6SRF8BoOy35qAoSOp" // production
+                var isNonProd = false;
+            }
+            if (typeof window.segment_write_key_from_qs != "undefined" && window.segment_write_key_from_qs.length > 0) {
+                window.segment_write_key = window.segment_write_key_from_qs;
+            }
+
+            var pagePath = getQueryStringParam("pagepath");
+            if (typeof pagePath == "undefined") {
+                var pagePath = "NO PAGE PATH - LT-Yantr partner integration";
+            }
+            var pageName = getQueryStringParam("pagename");
+            if (typeof pageName == "undefined") {
+                var pageName = "NO PAGE NAME - LT-Yantr partner integration";
+            }
+            var analyticsHost = window.location.host;
+            if (window.location.host.indexOf("localhost") > -1)
+                analyticsHost = "d1fidmk98tmsu2.cloudfront.net";
+            loadjsfile("https://" + analyticsHost + "/analytics/bootstrap.min.js", function(){
+                if (typeof ltanalytics != "undefined") {
+                    ltanalytics.page(pageName, {
+                      path: pagePath,
+                      isNonProd: isNonProd
+                    });
+                }
+            });
+        })();
+        </script>
+        <!-- segment tracking end -->
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/iframe-resizer/3.5.11/iframeResizer.contentWindow.min.js"></script>
+    </body>
+</html>
