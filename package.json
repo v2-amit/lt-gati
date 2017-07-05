@@ -6,10 +6,10 @@
   "scripts": {
     "copy_widget": "copyfiles --all widget/**/* dist",
     "build": "webpack --progress",
-    "local": " npm run copy_widget && cross-env NODE_ENV=local webpack-dev-server --open --inline",
-    "dev": "npm run copy_widget && cross-env NODE_ENV=dev webpack --progress --hide-modules",
-    "stage": "npm run copy_widget && cross-env NODE_ENV=stage webpack --progress --hide-modules",
-    "prod": "npm run copy_widget && cross-env NODE_ENV=prod webpack --progress --hide-modules"
+    "local": " yarn run copy_widget && cross-env NODE_ENV=local webpack-dev-server --open --inline",
+    "dev": "yarn run copy_widget && cross-env NODE_ENV=dev webpack --progress --hide-modules",
+    "stage": "yarn run copy_widget && cross-env NODE_ENV=stage webpack --progress --hide-modules",
+    "prod": "yarn run copy_widget && cross-env NODE_ENV=prod webpack --progress --hide-modules"
   },
   "dependencies": {
     "accounting": "^0.4.1"
