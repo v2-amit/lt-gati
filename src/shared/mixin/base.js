@@ -1,32 +1,28 @@
 import SetupModelForFilterMixin from '../mixin/setup-model-for-filter'
 import UniServiceMixin from '../mixin/uni-service'
-import ExpressOffersGroupbyMixin from '../mixin/group-by-and-create-filters'
+import GroupByMixin from '../mixin/group-by'
+import CreateFiltersMixin from '../mixin/create-filters'
 import applyFiltersOnGroupedDataMixin from '../mixin/apply-filters-on-grouped-data'
     
 export default {
-    computed: {
-        getGroupBy: function () {
-            var self = this
-            var modelsArr = [self.FilterModels.getReferralList]
-            var groupedOffersAndReferrals = self.groupByAndCreateFilters(self.LoanRequest, self.Referrals, self.Offers, self.GroupByFunctionsOnOffers, self.GroupByFunctionsOnReferrals, [], self.FilterByListOnReferrals);
-            return self.applyFiltersOnGroupedData(self.LoanRequest, {}, groupedOffersAndReferrals);
-        }
-    },
     data () {
         return {
-            GroupByFunctionsOnReferrals: [
-            ],
-            GroupByFunctionsOnOffers: [
-            ],
-            FilterByListOnReferrals: [
-            ],
-            FilterByListOnOffers: [
-            ],
-            FilterModels: {
-            },
-            Filters: {
+            GroupByFunctionsOnReferrals: [],
+            GroupByFunctionsOnOffers: [],
+            FilterByListOnReferrals: [],
+            FilterByListOnOffers: [],
+            FilterModels: {},
+            Filters: {}
+        }
+    },
+    methods: {
+        classifyObject(obj) {
+            if (obj && obj.offerAttributes) {
+                return "offers"
+            } else if (obj && obj.trusteeID) {
+                return "referrals"
             }
         }
     },
-    mixins: [SetupModelForFilterMixin, UniServiceMixin, ExpressOffersGroupbyMixin, applyFiltersOnGroupedDataMixin]
+    mixins: [SetupModelForFilterMixin, UniServiceMixin, GroupByMixin, CreateFiltersMixin, applyFiltersOnGroupedDataMixin]
 }

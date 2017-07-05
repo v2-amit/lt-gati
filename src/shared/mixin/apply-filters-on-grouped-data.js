@@ -25,11 +25,11 @@ export default {
         processFiltersFunctionOnRow(loanRequest, additionalData, row, functionName, type) {
             var self = this
             var result = {}
-            if (row && row.offerAttributes && type == "offers") {
+            if (self.classifyObject(row) == "offers") {
                 // call filter function associated with offer
                 //ideal minimum object {text: "sometext", filterValue: string / object}
                 result = self[functionName](loanRequest, row.referral, row, additionalData);
-            } else if (row && row.trusteeID && type == "referrals") {
+            } else if (self.classifyObject(row) == "referrals") {
                 // call filter function associated with referral
                 //ideal minimum object {text: "sometext", filterValue: string / object}
                 result = self[functionName](loanRequest, row, null, additionalData);

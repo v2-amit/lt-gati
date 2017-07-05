@@ -26,6 +26,15 @@
     import OfferRow from '../components/offer-row.vue'
     
     export default {
+        computed: {
+            getGroupBy: function () {
+                var self = this
+                var modelsArr = [self.FilterModels.getReferralList]
+                var groupedOffersAndReferrals = self.groupBy(self.LoanRequest, self.Referrals, self.Offers, self.GroupByFunctionsOnOffers, self.GroupByFunctionsOnReferrals);
+                self.createFilters(self.LoanRequest, self.Referrals, self.Offers, self.FilterByListOnOffers, self.FilterByListOnReferrals);
+                return self.applyFiltersOnGroupedData(self.LoanRequest, {}, groupedOffersAndReferrals);
+            }
+        },
         data () {
             return {
                 GroupByFunctionsOnReferrals: [
@@ -45,7 +54,7 @@
                 },
                 Filters: {
                 },
-                CustomOrder: ["regular", "short term", "secured", "referrals without offers"]
+                CustomOrder: ["regular", "short term", "secured", "referrals without offers", "asd"]
             }
         },
         components: {

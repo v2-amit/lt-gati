@@ -1,0 +1,6 @@
+export const RedirectMessages = {
+    "success": { "heading": "Welcome! By signing up, you now have access to the following helpful tools:", "message": "Once you've reviewed your offers, head over to the <a href='/dashboard#/credit-info-tab-summary'>Dashboard</a> page to see your free credit score, explanation of credit factors, and lots of other great info.", "trackEventName": "OOW Success Message Shown"},
+    "unknown-error": { "heading": "Hmm, something went wrong", "message": "Unfortunately we aren't able to get your credit score at this time. Please try again later."},
+    "oow-questions-fail": { "heading": "We couldn't validate your identity", "message": "There have been too many failed attempts to validate your identity. For security purposes, access to this account has been blocked for 30 days from the date when the violation was reported to the credit bureau."},
+    "existing-fcs": { "heading": "Good news!", "message": "You're already signed up to receive your free credit score. Once you've reviewed your loan offers check the <a href='/dashboard#/credit-info-tab-summary'>Dashboard</a></span> page to learn more."}
+}
